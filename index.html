@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เครื่องคำนวณกำไร</title>
+    <style>
+        /* กำหนดสไตล์สำหรับหน้าเว็บ */
+        body {
+            font-family: Arial, sans-serif; /* ใช้ฟอนต์ Arial */
+            display: flex; /* ใช้ flexbox layout */
+            justify-content: center; /* จัดตำแหน่งอยู่ตรงกลางแนวนอน */
+            align-items: center; /* จัดตำแหน่งอยู่ตรงกลางแนวตั้ง */
+            height: 100vh; /* ความสูงของหน้าเว็บคือ 100% ของ viewport height */
+            width: 100vw;
+            margin: 0; /* ลบการ margin ของ body */
+            padding: 0;
+            background-color: #fff; /* กำหนดสีพื้นหลัง */
+            /*overflow: auto; /* ป้องกันการเลื่อนหน้าจอ */
+            
+        }
+
+        .container {
+            display: flex;
+            text-align: center; /* จัดข้อความให้อยู่กลาง */
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            height: 100vh;
+            max-width: 100vw;
+            background: #fff; /* กำหนดพื้นหลังของ container เป็นสีขาว */       
+            padding: 30px; /* เพิ่มพื้นที่ภายใน container */
+            border-radius: 8px; /* มุมของ container เป็นทรงกลม */
+            box-shadow: 0 0 10px rgba(0,0,0,0.1); /* เพิ่มเงาให้กับ container */
+            box-sizing: border-box;
+            overflow: auto;
+
+        }
+        img {
+            max-width: 100%; /* ทำให้รูปภาพปรับขนาดตามความกว้างของ container */
+            height: auto; /* ความสูงของรูปภาพจะปรับอัตโนมัติ */
+            margin-bottom: 10px; /* เพิ่มพื้นที่ด้านล่างรูปภาพ */
+            object-fit: cover; /* ปรับให้ภาพเต็มพื้นที่และไม่ผิดสัดส่วน */
+        }
+        input, button {
+            margin: 10px; /* เพิ่มพื้นที่รอบ ๆ ช่องกรอกและปุ่ม */
+            padding: 10px; /* เพิ่มพื้นที่ภายในช่องกรอกและปุ่ม */
+            font-size: 16px; /* กำหนดขนาดฟอนต์สำหรับช่องกรอกและปุ่ม */
+            border-radius: 8px; /* มุมของกล่องกรอกข้อมูลและปุ่มเป็นทรงกลม */
+            border: 1px solid #ccc; /* กำหนดเส้นขอบของกล่องกรอกข้อมูลและปุ่ม */
+            width: 100%; /* ทำให้ช่องกรอกและปุ่มกว้างเต็มพื้นที่ของ container */
+            box-sizing: border-box; /* รวม padding และ border เข้าไปในความกว้างของ element */
+        }
+        button {
+            cursor: pointer; /* เปลี่ยนเคอร์เซอร์เป็นมือชี้เมื่อชี้ไปที่ปุ่ม */
+            background-color: #0fdb42; /* กำหนดสีพื้นหลังของปุ่ม */
+            color: #fff; /* กำหนดสีตัวอักษรของปุ่ม */
+            border: none; /* ลบเส้นขอบของปุ่ม */
+            font-weight: bold; /* ทำให้ข้อความในปุ่มหนา */
+        }
+        button:hover {
+            background-color: #0056b3; /* เปลี่ยนสีพื้นหลังของปุ่มเมื่อเลื่อนเมาส์ไปบนปุ่ม */
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- แสดงรูปภาพที่เกี่ยวข้องกับเครื่องคำนวณกำไร -->
+        <img src="data:image/jpeg;base64,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" alt="เครื่องคำนวณกำไร">
+        <h1>คำนวณกำไร ปั๊ง !!!</h1> <!-- หัวเรื่องของหน้า -->
+        <form id="profit-form">
+            <!-- ช่องกรอกต้นทุนต่อจาน -->
+            <label for="cost">ต้นทุนต่อจาน (บาท):</label>
+            <input type="text" id="cost" name="cost" step="0.01" required>
+            
+            <!-- ช่องกรอกราคาขายต่อจาน -->
+            <label for="price">ราคาขายต่อจาน (บาท):</label>
+            <input type="text" id="price" name="price" step="0.01" required>
+            
+            <!-- ปุ่มสำหรับคำนวณกำไร -->
+            <button type="button" onclick="calculateProfit()">คำนวณกำไร</button>
+        </form>
+        
+        <!-- แสดงผลลัพธ์ที่คำนวณได้ -->
+        <div id="result"></div>
+    </div>
+
+    <script>
+        // ฟังก์ชันสำหรับคำนวณกำไร
+        function calculateProfit() {
+            // รับค่าต้นทุนและราคาขายจากช่องกรอก
+            var cost = parseFloat(document.getElementById('cost').value);
+            var price = parseFloat(document.getElementById('price').value);
+            
+            // ตรวจสอบว่าค่าที่กรอกถูกต้องหรือไม่
+            if (isNaN(cost) || isNaN(price) || cost <= 0 || price <= 0) {
+                alert('กรุณากรอกค่าที่ถูกต้อง');
+                return;
+            }
+            
+            // คำนวณกำไรก่อนหักค่าคอมมิชชั่น
+            var profitBeforeCommission = price - cost;
+            // คำนวณค่าคอมมิชชั่น 32% ของราคาขาย
+            var commission = 0.32 * price;
+            // คำนวณกำไรหลังหักค่าคอมมิชชั่น
+            var profitAfterCommission = profitBeforeCommission - commission;
+            // คำนวณมาร์จิ้นกำไรเป็นเปอร์เซ็นต์
+            var profitMargin = (profitAfterCommission / cost) * 100;
+            // คำนวนกำไรต่อยอดขาย
+            var profit = (profitAfterCommission / price) * 100;
+
+            // แสดงผลลัพธ์ที่คำนวณได้บนหน้าเว็บ
+            document.getElementById('result').innerHTML = 
+                'กำไรต่อจาน: ' + profitBeforeCommission.toFixed(2) + ' บาท<br>' +
+                'กำไรหลังหักค่าคอมมิชชั่น: ' + profitAfterCommission.toFixed(2) + ' บาท<br>'+
+                'กำไร: ' + profitMargin.toFixed(2) + '% ต่อต้นทุน<br>'+ 
+                'กำไร: ' + profit.toFixed(2) + '% ต่อยอดขาย<br>';
+
+    
+        }
+
+        // ฟังก์ชันสำหรับตรวจสอบและทำความสะอาดข้อมูลที่กรอกในช่องกรอก
+        function validateNumber(input) {
+            // ลบอักขระที่ไม่ใช่ตัวเลขหรือจุดทศนิยม
+            input.value = input.value.replace(/[^0-9.]/g, '');
+        }
+    </script>
+</body>
+</html>
